@@ -4,7 +4,15 @@
 
         @php $relationshipField = $row->field; @endphp
 
-        @if($options->type == 'belongsTo')
+		@if (isset($options->input_type) && $options->input_type !== 'relationship')
+
+			@php
+				$row->type = $options->input_type
+			@endphp
+
+			{!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+
+		@elseif($options->type == 'belongsTo')
 
             @if(isset($view) && ($view == 'browse' || $view == 'read'))
 
