@@ -1,10 +1,15 @@
 <br>
-<?php $checked = false; ?>
-@if(isset($dataTypeContent->{$row->field}) || old($row->field))
-    <?php $checked = old($row->field, $dataTypeContent->{$row->field}); ?>
-@else
-    <?php $checked = isset($options->checked) && $options->checked ? true : false; ?>
-@endif
+
+@php
+    $model = app($options->model);
+    $query = $model::all();
+@endphp
+
+@foreach($query as $relationshipData)
+    {{ $relationshipData->{$options->label} }}
+    <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"><br>
+@endforeach
+
 
 @if(isset($options->on) && isset($options->off))
     <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
@@ -14,3 +19,4 @@
     <input type="checkbox" name="{{ $row->field }}" class="toggleswitch"
            @if($checked) checked @endif>
 @endif
+
