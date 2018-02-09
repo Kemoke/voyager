@@ -107,7 +107,10 @@ class DataType extends Model
 
                     $dataRow->required = $requestData['field_required_'.$field];
                     $dataRow->field = $requestData['field_'.$field];
+
+                    // TODO: Check if we need to add relationship
                     $dataRow->type = $requestData['field_input_type_'.$field];
+
                     $dataRow->details = $requestData['field_details_'.$field];
                     $dataRow->display_name = $requestData['field_display_name_'.$field];
                     $dataRow->order = intval($requestData['field_order_'.$field]);
@@ -176,6 +179,7 @@ class DataType extends Model
                     // Build the relationship details
                     $relationshipDetails = [
                         'model'       => $requestData['relationship_model_'.$relationship],
+                        'input_type'  => $requestData['relationship_input_type'],
                         'table'       => $requestData['relationship_table_'.$relationship],
                         'type'        => $requestData['relationship_type_'.$relationship],
                         'column'      => $relationship_column,
