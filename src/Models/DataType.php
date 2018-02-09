@@ -179,7 +179,7 @@ class DataType extends Model
                     // Build the relationship details
                     $relationshipDetails = [
                         'model'       => $requestData['relationship_model_'.$relationship],
-                        'input_type'  => $requestData['relationship_input_type'],
+                        'input_type'  => $requestData['relationship_input_type_'.$relationship],
                         'table'       => $requestData['relationship_table_'.$relationship],
                         'type'        => $requestData['relationship_type_'.$relationship],
                         'column'      => $relationship_column,
