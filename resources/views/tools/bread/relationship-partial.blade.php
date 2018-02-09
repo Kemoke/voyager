@@ -91,6 +91,19 @@
                 </span>
             @endisset
         </div>
+
+        <div class="relationship_details_content margin_top">
+            <label>{{ __('voyager.database.input_type') }}</label>
+
+            <select name="relationship_input_type">
+                @foreach (Voyager::formFields() as $formField)
+                    <option value="{{ $formField->getCodename() }}" @if(isset($relationshipDetails->input_type) && $relationshipDetails->input_type == $formField->getCodename()){{ 'selected' }}@endif>
+                        {{ $formField->getName() }}
+                    </option>
+                @endforeach
+            </select>
+
+        </div>
     </div>
     <input type="hidden" value="0" name="field_required_{{ $relationship['field'] }}" checked="checked">
     <input type="hidden" name="field_input_type_{{ $relationship['field'] }}" value="relationship">
