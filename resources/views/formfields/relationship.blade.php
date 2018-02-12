@@ -7,6 +7,7 @@
 		@if (isset($options->input_type) && $options->input_type !== 'relationship')
 
 			@php
+				// Overwrite the row type...
 				$row->type = $options->input_type
 			@endphp
 
