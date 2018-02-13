@@ -47,20 +47,22 @@
     </tbody>
 </table>
 
+@push('modals')
 {{-- Child form modal... --}}
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                <h4 class="modal-title">Add a new {{ str_singular($relationshipDataType->name) }}</h4>
-            </div>
-            <div class="modal-body" id="form">
-                {{-- Generate the form that the user can use to generate a new child... --}}
-                <form role="form"
-                    class="form-edit-add"
-                    action=""
-                    method="POST" enctype="multipart/form-data">
+            <form role="form"
+                class="form-edit-add"
+                action="{{ route('voyager.' . $relationshipDataType->slug . '.store') }}"
+                method="POST" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">Add a new {{ str_singular($relationshipDataType->name) }}</h4>
+                </div>
+                <div class="modal-body" id="form">
+                    {{-- Generate the form that the user can use to generate a new child... --}}
+                    
                     {{ csrf_field() }}
 
                     @php 
@@ -81,35 +83,15 @@
                             {!! app('voyager')->formField($row, $relationshipDataType, $relationshipDataTypeContent) !!}
                         </div>
                     @endforeach
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="save()">Save changes</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script type="text/javascript">
-    function save() {
-        var inputs = document.getElementById('form').getElementsByTagName('input');
-        inputs = Array.from(inputs);
-
-        var data = {};
-        data['{{$options->column}}'] = {{ $dataTypeContent->id }};
-        inputs.forEach((item) => {
-            data[item.name] = item.value;
-        });
-
-        console.log(data);
-
-        axios.post('{{ route('voyager.' . $relationshipDataType->slug . '.store') }}', data)
-             .then(() => {
-                window.location.reload()
-            });
-    }
-</script>
+@endpush
 
 <hr/>

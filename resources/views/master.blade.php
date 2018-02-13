@@ -108,6 +108,8 @@ if (starts_with(Auth::user()->avatar, 'http://') || starts_with(Auth::user()->av
 </div>
 @include('voyager::partials.app-footer')
 
+@stack('modals')
+
 <!-- Javascript Libs -->
 
 
