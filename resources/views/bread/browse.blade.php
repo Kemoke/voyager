@@ -100,7 +100,11 @@
                                                 @if($row->type == 'image')
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
-                                                    @include('voyager::formfields.relationship', ['view' => 'browse'])
+                                                    @if ($options->input_type == 'child_module')
+                                                        TODO
+                                                    @else
+                                                        @include('voyager::formfields.relationship', ['view' => 'browse'])
+                                                    @endif
                                                 @elseif($row->type == 'select_multiple')
                                                     @if(property_exists($options, 'relationship'))
 
