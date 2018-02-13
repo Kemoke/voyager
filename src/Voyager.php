@@ -28,6 +28,9 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
+use TCG\Voyager\Actions\ViewAction;
+use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\DeleteAction;
 
 class Voyager
 {
@@ -149,6 +152,11 @@ class Voyager
         return $this;
     }
 
+    public function addAction($action)
+    {
+        array_push($this->actions, $action);
+    }
+
     public function addAfterFormField($handler)
     {
         if (!$handler instanceof AfterHandlerInterface) {
@@ -158,6 +166,11 @@ class Voyager
         $this->afterFormFields[$handler->getCodename()] = $handler;
 
         return $this;
+    }
+
+    public function actions()
+    {
+        return $this->actions;
     }
 
     public function formFields()
