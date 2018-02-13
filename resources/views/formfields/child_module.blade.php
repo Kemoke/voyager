@@ -20,7 +20,7 @@
 <hr/>
 
 <p>
-    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Add a new {{ str_singular($relationshipDataType->name) }}</button> <br/>
+    <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".form-modal-{{ $relationshipDataType->name }}">Add a new {{ str_singular($relationshipDataType->name) }}</button> <br/>
 </p>
     
 {{-- 
@@ -50,14 +50,14 @@
 <hr/>
 
 @push('modals')
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade form-modal-{{ $relationshipDataType->name }}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <form role="form"
                 class="form-edit-add"
                 action="{{ route('voyager.' . $relationshipDataType->slug . '.store') }}"
                 method="POST" enctype="multipart/form-data">
-                <div class="modal-header">
+                <div class="modal-header card blue" >
                     <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                     <h4 class="modal-title">Add a new {{ str_singular($relationshipDataType->name) }}</h4>
                 </div>
