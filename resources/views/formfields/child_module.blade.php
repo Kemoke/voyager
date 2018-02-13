@@ -1,13 +1,12 @@
 {{--
     TODO:
-        - Fix overview.
         - Fix add.
         - Fix adding relationsíhip.
 --}}
 
 @php
     // Instantiate a new model which we can use in the rest of the component...
-    $model = new $options->model; 
+    $model = app()->make($options->model); 
 
     // Retrieve the datatype of the relationship and preset the id of parent...
     $relationshipDataType = \TCG\Voyager\Models\DataType::where('model_name', $options->model)->first();
