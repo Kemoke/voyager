@@ -281,6 +281,7 @@ class VoyagerServiceProvider extends ServiceProvider
     {
         $formFields = [
             'checkbox',
+            'child_module',
             'color',
             'date',
             'file',
