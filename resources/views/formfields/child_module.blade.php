@@ -47,8 +47,9 @@
     </tbody>
 </table>
 
+<hr/>
+
 @push('modals')
-{{-- Child form modal... --}}
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -61,8 +62,6 @@
                     <h4 class="modal-title">Add a new {{ str_singular($relationshipDataType->name) }}</h4>
                 </div>
                 <div class="modal-body" id="form">
-                    {{-- Generate the form that the user can use to generate a new child... --}}
-                    
                     {{ csrf_field() }}
 
                     @php 
@@ -77,6 +76,9 @@
                         })->all();
                     @endphp
 
+                    <input type="hidden" name="{{ $options->column }}" value="{{ $dataTypeContent->id }}">
+                    
+                    {{-- Generate the form that the user can use to create a new child... --}}
                     @foreach ($dataTypeRows as $row)
                         <div class="form-group">
                             <label>{{ $row->display_name }}</label>
@@ -93,5 +95,3 @@
     </div>
 </div>
 @endpush
-
-<hr/>
