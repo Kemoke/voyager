@@ -152,11 +152,6 @@ class Voyager
         return $this;
     }
 
-    public function addAction($action)
-    {
-        array_push($this->actions, $action);
-    }
-
     public function addAfterFormField($handler)
     {
         if (!$handler instanceof AfterHandlerInterface) {
@@ -166,11 +161,6 @@ class Voyager
         $this->afterFormFields[$handler->getCodename()] = $handler;
 
         return $this;
-    }
-
-    public function actions()
-    {
-        return $this->actions;
     }
 
     public function formFields()
