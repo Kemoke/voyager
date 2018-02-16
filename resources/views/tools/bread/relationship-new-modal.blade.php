@@ -84,7 +84,7 @@
                                 <div class="well">
                                     <label>{{ __('voyager.database.input_type') }}</label>
                                     <p>
-                                        <select name="relationship_input_type">
+                                        <select name="relationship_input_type" class="select2">
                                             @foreach (Voyager::formFields() as $formField)
                                                 <option value="{{ $formField->getCodename() }}" @if(isset($dataRow->type) && $dataRow->type == $formField->getCodename()){{ 'selected' }}@endif>
                                                     {{ $formField->getName() }}
