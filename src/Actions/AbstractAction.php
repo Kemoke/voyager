@@ -20,6 +20,7 @@ abstract class AbstractAction implements ActionInterface
 
     public function getPolicy()
     {
+        return null;
     }
 
     public function getRoute($key)
