@@ -12,6 +12,9 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Actions\EditAction;
 use TCG\Voyager\Actions\ViewAction;
+use TCG\Voyager\Actions\ViewAction;
+use TCG\Voyager\Actions\EditAction;
+use TCG\Voyager\Actions\DeleteAction;
 use TCG\Voyager\Events\AlertsCollection;
 use TCG\Voyager\FormFields\After\HandlerInterface as AfterHandlerInterface;
 use TCG\Voyager\FormFields\HandlerInterface;
@@ -28,9 +31,6 @@ use TCG\Voyager\Models\Setting;
 use TCG\Voyager\Models\Translation;
 use TCG\Voyager\Models\User;
 use TCG\Voyager\Traits\Translatable;
-use TCG\Voyager\Actions\ViewAction;
-use TCG\Voyager\Actions\EditAction;
-use TCG\Voyager\Actions\DeleteAction;
 
 class Voyager
 {
