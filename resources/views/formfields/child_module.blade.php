@@ -50,12 +50,12 @@
                         </a>
                     @endcan
                     @can('edit', $data)
-                        <a href="{{ route('voyager.'.$relationshipDataType->slug.'.edit', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
+                        <a href="javascript:;" onclick="$('.edit-modal-{{ $data->{$data->getKeyName()} }}').modal('show');" data-id="{{ $data->{$data->getKeyName()} }}" title="{{ __('voyager.generic.edit') }}" class="btn btn-sm btn-primary pull-right edit">
                             <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.edit') }}</span>
                         </a>
                     @endcan
                     @can('read', $data)
-                        <a href="{{ route('voyager.'.$relationshipDataType->slug.'.show', $data->{$data->getKeyName()}) }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right">
+                        <a href="javascript:;" data-id="{{ $data->{$data->getKeyName()} }}" title="{{ __('voyager.generic.view') }}" class="btn btn-sm btn-warning pull-right view">
                             <i class="voyager-eye"></i> <span class="hidden-xs hidden-sm">{{ __('voyager.generic.view') }}</span>
                         </a>
                     @endcan
@@ -69,6 +69,7 @@
 <hr/>
 
 @push('modals')
+{{-- Create modal... --}}
 <div class="modal fade form-modal-{{ $relationshipDataType->name }}" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -95,8 +96,6 @@
                         })->all();
                     @endphp
 
-                    <input type="hidden" name="{{ $options->column }}" value="{{ $dataTypeContent->id }}">
-                    
                     {{-- Generate the form that the user can use to create a new child... --}}
                     @foreach ($dataTypeRows as $row)
                         <div class="form-group">
@@ -104,6 +103,59 @@
                             {!! app('voyager')->formField($row, $relationshipDataType, $relationshipDataTypeContent) !!}
                         </div>
                     @endforeach
+
+                    <input type="hidden" name="{{ $options->column }}" value="{{ $dataTypeContent->id }}">
+                    <input type="hidden" name="child_module[parent]" value="{{ $dataType->name }}">
+                    <input type="hidden" name="child_module[parent_id]" value="{{ $dataTypeContent->id }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Edit modal... --}}
+@foreach ($model->where($options->column, $dataTypeContent->id)->get() as $data)
+<div class="modal fade edit-modal-{{ $data->id }}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form role="form"
+                class="form-edit-add"
+                action="{{ route('voyager.'.$relationshipDataType->slug.'.update', ['id' => $data->id]) }}"
+                method="POST" enctype="multipart/form-data" id="edit_form">
+                <div class="modal-header card blue" >
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <h4 class="modal-title">Edit {{ str_singular($relationshipDataType->name) }}</h4>
+                </div>
+                <div class="modal-body" id="form">
+                    {{ csrf_field() }}
+                    {{ method_field("PUT") }}
+
+                    @php 
+                        $dataTypeRows = $relationshipDataType->{(isset($relationshipDataTypeContent->id) ? 'editRows' : 'addRows' )};
+
+                        // Don't include the relationship fields and the parent id field...
+                        $dataTypeRows = $dataTypeRows->filter(function ($dataType) use ($options) {
+                            if ($dataType->type === 'relationship') return false;
+                            if ($dataType->field === $options->column) return false;
+
+                            return true;
+                        })->all();
+                    @endphp
+
+                    @foreach ($dataTypeRows as $row)
+                        <div class="form-group">
+                            <label>{{ $row->display_name }}</label>
+                            {!! app('voyager')->formField($row, $relationshipDataType, $data) !!}
+                        </div>
+                    @endforeach
+
+                    <input type="hidden" name="{{ $options->column }}" value="{{ $dataTypeContent->id }}">
+                    <input type="hidden" name="child_module[parent]" value="{{ $dataType->name }}">
+                    <input type="hidden" name="child_module[parent_id]" value="{{ $dataTypeContent->id }}">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -113,8 +165,9 @@
         </div>
     </div>
 </div>
+@endforeach
 
-{{-- Single delete modal --}}
+{{-- Delete modal --}}
 <div class="modal modal-danger fade" tabindex="-1" id="delete_modal" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -124,11 +177,14 @@
                 <h4 class="modal-title"><i class="voyager-trash"></i> {{ __('voyager.generic.delete_question') }} {{ strtolower($relationshipDataType->display_name_singular) }}?</h4>
             </div>
             <div class="modal-footer">
-                <form action="{{ route('voyager.'.$relationshipDataType->slug.'.index') }}" id="delete_form" method="POST">
+                <form action="#" id="delete_form" method="POST">
                     {{ method_field("DELETE") }}
                     {{ csrf_field() }}
                     <input type="submit" class="btn btn-danger pull-right delete-confirm"
                              value="{{ __('voyager.generic.delete_confirm') }} {{ strtolower($relationshipDataType->display_name_singular) }}">
+
+                    <input type="hidden" name="child_module[parent]" value="{{ $dataType->name }}">
+                    <input type="hidden" name="child_module[parent_id]" value="{{ $dataTypeContent->id }}">
                 </form>
                 <button type="button" class="btn btn-default pull-right" data-dismiss="modal">{{ __('voyager.generic.cancel') }}</button>
             </div>
@@ -159,20 +215,18 @@
             @endif
         });
 
+        // User clicks on the edit button...
+        $('td').on('click', '.edit', function (e) {
+            $('#edit_form')[0].action = '{{ route('voyager.'.$relationshipDataType->slug.'.update', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
+
+            // Retrieve data...
+
+            
+        });
 
         var deleteFormAction;
         $('td').on('click', '.delete', function (e) {
-            var form = $('#delete_form')[0];
-
-            if (!deleteFormAction) { // Save form action initial value
-                deleteFormAction = form.action;
-            }
-
-            form.action = deleteFormAction.match(/\/[0-9]+$/)
-                ? deleteFormAction.replace(/([0-9]+$)/, $(this).data('id'))
-                : deleteFormAction + '/' + $(this).data('id');
-            console.log(form.action);
-
+            $('#delete_form')[0].action = '{{ route('voyager.'.$relationshipDataType->slug.'.destroy', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
             $('#delete_modal').modal('show');
         });
     </script>
