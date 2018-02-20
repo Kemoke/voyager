@@ -159,6 +159,9 @@ class VoyagerBreadController extends Controller
             return redirect()->route('voyager.bread.index')->with($data);
         } catch (Exception $e) {
             return back()->with($this->alertException($e, __('voyager::generic.update_failed')));
+
+            // Check if we have a parent id, if not, redirect the id to the create route.
+            if (!isset($request->child_module['parent_id'])) $route = "voyager.".$request->child_module['parent'].".create";
         }
     }
 
