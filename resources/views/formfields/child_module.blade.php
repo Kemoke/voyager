@@ -9,8 +9,6 @@
 
 {{-- {"model":"App\\Picture","input_type":"picture_child_module","table":"pictures","type":"hasMany","column":"album_id","key":"album_id","label":"title","pivot_table":"albums","pivot":"0"} --}}
 
-<hr/>
-
 <p>
     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".form-modal-{{ $relationshipDataType->name }}">Add a new {{ str_singular($relationshipDataType->name) }}</button> <br/>
 </p>
