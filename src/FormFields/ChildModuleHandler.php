@@ -5,6 +5,7 @@ namespace TCG\Voyager\FormFields;
 class ChildModuleHandler extends AbstractHandler
 {
     protected $codename = 'child_module';
+    protected $relationshipField = true;
 
     public function createContent($row, $dataType, $dataTypeContent, $options)
     {

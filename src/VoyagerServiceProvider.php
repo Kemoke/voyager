@@ -280,6 +280,7 @@ class VoyagerServiceProvider extends ServiceProvider
     protected function registerFormFields()
     {
         $formFields = [
+            'relationship',
             'checkbox',
             'child_module',
             'color',
@@ -300,8 +301,7 @@ class VoyagerServiceProvider extends ServiceProvider
             'time',
             'timestamp',
             'hidden',
-            'coordinates',
-            'relationship'
+            'coordinates'
         ];
 
         foreach ($formFields as $formField) {

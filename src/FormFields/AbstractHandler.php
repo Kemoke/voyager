@@ -11,6 +11,7 @@ abstract class AbstractHandler implements HandlerInterface
     protected $name;
     protected $codename;
     protected $supports = [];
+    protected $relationshipField = false;
 
     public function handle($row, $dataType, $dataTypeContent)
     {
@@ -55,5 +56,10 @@ abstract class AbstractHandler implements HandlerInterface
         }
 
         return $this->name;
+    }
+
+    public function getRelationshipField()
+    {
+        return $this->relationshipField;
     }
 }

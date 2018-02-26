@@ -85,7 +85,7 @@
                                     <label>{{ __('voyager.database.input_type') }}</label>
                                     <p>
                                         <select name="relationship_input_type" class="select2">
-                                            @foreach (Voyager::formFields() as $formField)
+                                            @foreach (Voyager::formFieldsRelationship() as $formField)
                                                 <option value="{{ $formField->getCodename() }}">
                                                     {{ $formField->getName() }}
                                                 </option>

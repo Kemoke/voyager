@@ -170,6 +170,20 @@ class Voyager
 
         return collect($this->formFields)->filter(function ($after) use ($driver) {
             return $after->supports($driver);
+        })->filter(function ($field) {
+            return !$field->getRelationshipField();
+        });
+    }
+
+    public function formFieldsRelationship()
+    {
+        $connection = config('database.default');
+        $driver = config("database.connections.{$connection}.driver", 'mysql');
+
+        return collect($this->formFields)->filter(function ($after) use ($driver) {
+            return $after->supports($driver);
+        })->filter(function ($field) {
+            return $field->getRelationshipField();
         });
     }
 

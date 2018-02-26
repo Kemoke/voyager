@@ -96,7 +96,7 @@
             <label>{{ __('voyager.database.input_type') }}</label>
 
             <select name="relationship_input_type_{{ $relationship['field'] }}" class="select2">
-                @foreach (Voyager::formFields() as $formField)
+                @foreach (Voyager::formFieldsRelationship() as $formField)
                     <option value="{{ $formField->getCodename() }}" @if(isset($relationshipDetails->input_type) && $relationshipDetails->input_type == $formField->getCodename()){{ 'selected' }}@endif>
                         {{ $formField->getName() }}
                     </option>
