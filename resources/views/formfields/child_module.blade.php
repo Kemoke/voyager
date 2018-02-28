@@ -7,14 +7,11 @@
     $relationshipDataTypeContent->{$options->column} = $dataTypeContent->id;
 @endphp
 
-{{-- {"model":"App\\Picture","input_type":"picture_child_module","table":"pictures","type":"hasMany","column":"album_id","key":"album_id","label":"title","pivot_table":"albums","pivot":"0"} --}}
-
 <p>
     <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".form-modal-{{ $relationshipDataType->name }}">Add a new {{ str_singular($relationshipDataType->name) }}</button> <br/>
 </p>
-    
 
- <div class="table-responsive">
+<div class="table-responsive">
     <table id="dataTable" class="table table-hover">
         <thead>
             <tr>
@@ -30,9 +27,9 @@
                 @foreach($relationshipDataType->browseRows as $row)
                 <?php $rowOptions = json_decode($row->details); ?>
                 <td>
-                    @if($row->type == 'image')
+                    @if($row->type === 'image')
                         <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
-                    @elseif($row->type == 'text')
+                    @elseif($row->type === 'text')
                         @include('voyager::multilingual.input-hidden-bread-browse')
                         <div class="readmore">{{ mb_strlen( $data->{$row->field} ) > 200 ? mb_substr($data->{$row->field}, 0, 200) . ' ...' : $data->{$row->field} }}</div>
                     @else
@@ -62,7 +59,7 @@
             @endforeach
         </tbody>
     </table>
- </div>
+</div>
 
 <hr/>
 
@@ -82,7 +79,7 @@
                 <div class="modal-body" id="form">
                     {{ csrf_field() }}
 
-                    @php 
+                    @php
                         $dataTypeRows = $relationshipDataType->{(isset($relationshipDataTypeContent->id) ? 'editRows' : 'addRows' )};
 
                         // Don't include the relationship fields and the parent id field...
@@ -132,7 +129,7 @@
                     {{ csrf_field() }}
                     {{ method_field("PUT") }}
 
-                    @php 
+                    @php
                         $dataTypeRows = $relationshipDataType->{(isset($relationshipDataTypeContent->id) ? 'editRows' : 'addRows' )};
 
                         // Don't include the relationship fields and the parent id field...
@@ -216,10 +213,6 @@
         // User clicks on the edit button...
         $('td').on('click', '.edit', function (e) {
             $('#edit_form')[0].action = '{{ route('voyager.'.$relationshipDataType->slug.'.update', ['id' => '__id']) }}'.replace('__id', $(this).data('id'));
-
-            // Retrieve data...
-
-            
         });
 
         var deleteFormAction;
