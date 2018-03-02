@@ -64,7 +64,7 @@
                                 @else
                                     <div class="form-group @if($row->type == 'hidden') hidden @endif col-md-{{ $display_options->width or 12 }}" @if(isset($display_options->id)){{ "id=$display_options->id" }}@endif>
                                         {{ $row->slugify }}
-                                        <label for="name">{{ $row->display_name }}</label>
+                                        <label for="name"><strong>{{ $row->display_name }}</strong></label>
                                         @include('voyager::multilingual.input-hidden-bread-edit-add')
                                         @if($row->type == 'relationship')
                                             @include('voyager::formfields.relationship')
