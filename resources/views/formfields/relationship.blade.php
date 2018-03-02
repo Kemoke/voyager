@@ -11,7 +11,14 @@
 				$row->type = $options->input_type
 			@endphp
 
-			{!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+			@if (isset($view) && $view === 'read')
+				@php $models = (new $options->model)->where($options->column, $dataTypeContent->id)->get(); @endphp
+				@foreach ($models as $model)
+					<a href="{{ '/' . config('voyager.prefix') . '/' . $options->table . '/' . $model->id}}" target="_blank">{{ $model->{$options->label} }}</a><br>
+				@endforeach
+			@else
+				{!! app('voyager')->formField($row, $dataType, $dataTypeContent) !!}
+			@endif
 
 		@elseif($options->type == 'belongsTo')
 
