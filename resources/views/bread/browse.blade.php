@@ -101,8 +101,13 @@
                                                     <img src="@if( !filter_var($data->{$row->field}, FILTER_VALIDATE_URL)){{ Voyager::image( $data->{$row->field} ) }}@else{{ $data->{$row->field} }}@endif" style="width:100px">
                                                 @elseif($row->type == 'relationship')
                                                     @if (isset($options->input_type) && $options->input_type == 'child_module')
-                                                        TODO
-                                                    @else
+                                                            {{ $count = (new $options->model)->where('album_id', $data->id)->count() }}
+                                                            @if ($count === 1)
+                                                                {{ str_singular($row->display_name) }}
+                                                            @else
+                                                                {{ $row->display_name }}
+                                                            @endif
+                                                        @else
                                                         @include('voyager::formfields.relationship', ['view' => 'browse'])
                                                     @endif
                                                 @elseif($row->type == 'select_multiple')
