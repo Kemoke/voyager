@@ -8,7 +8,7 @@
 @endphp
 
 @if (str_contains(request()->path(), 'create'))
-    <p>You can add more {{ $row->display_name }} when you create an album and go to edit.</p>
+    <p>You can add more <a href="{{ '/'.config('voyager.prefix').'/'.$row->table }}">{{ $row->display_name }}</a> when you create an album and go to edit.</p>
 @else
     <p>
         <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target=".form-modal-{{ $relationshipDataType->name }}">Add a new {{ str_singular($relationshipDataType->name) }}</button> <br/>
